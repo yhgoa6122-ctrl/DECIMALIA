@@ -1,0 +1,1487 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aprende números decimales con mascotas y juegos visuales.">
+<title>Decimalia · Aprende jugando</title>
+
+<style>
+:root{
+  color-scheme:light;
+  --ink:#243049;
+  --muted:#586276;
+  --purple:#6039a8;
+  --soft:#eee7fa;
+  --mint:#65c8b9;
+  --cream:#fff9ef;
+  --line:#e5e1eb;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font:17px/1.6 "Trebuchet MS",Arial,sans-serif;
+}
+button,input{font:inherit}
+button{
+  min-height:48px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:10px 18px;
+  background:#fff;
+  color:var(--ink);
+  cursor:pointer;
+  font-weight:700;
+  touch-action:manipulation;
+}
+button:disabled{cursor:default;opacity:.65}
+button:not(:disabled):hover{
+  border-color:var(--purple);
+  background:#f5f0fd;
+}
+button:focus-visible,input:focus-visible{
+  outline:3px solid #bd7900;
+  outline-offset:4px;
+}
+input{
+  width:100%;
+  padding:14px 16px;
+  border:2px solid #d5cce2;
+  border-radius:15px;
+  background:#fff;
+  color:var(--ink);
+  font-size:20px;
+}
+h1,h2,h3,p{margin:0 0 16px}
+h1{
+  font-size:clamp(28px,5vw,44px);
+  line-height:1.2;
+  letter-spacing:-1px;
+}
+h2{font-size:26px;margin-top:28px}
+h3{font-size:22px;line-height:1.3}
+svg{display:block;width:100%;height:auto}
+header{
+  background:#ffffffdf;
+  border-bottom:1px solid var(--line);
+}
+.topbar{
+  max-width:1060px;
+  margin:auto;
+  padding:15px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:var(--purple);
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+.brand-dot{
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:var(--mint);
+  box-shadow:5px -5px 0 -1px #ffba88;
+}
+.grade,.status{
+  display:inline-block;
+  font-size:14px;
+  font-weight:700;
+  color:#51318c;
+  background:var(--soft);
+  padding:5px 12px;
+  border-radius:100px;
+}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{font-size:14px;min-height:44px;padding:8px 12px}
+main{
+  max-width:1060px;
+  margin:0 auto;
+  padding:30px 24px 50px;
+  outline:none;
+}
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  padding:0 20px 25px;
+}
+.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:28px;
+  box-shadow:0 8px 0 #40206005;
+}
+.entry{max-width:650px;margin:15px auto;text-align:center}
+.eyebrow{
+  display:block;
+  color:#654491;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.6px;
+  margin-bottom:12px;
+}
+.intro{font-size:20px;color:var(--muted)}
+.entry form{text-align:left;margin-top:28px}
+.field-label,legend{display:block;font-weight:700;margin-bottom:9px}
+fieldset{margin:24px 0 12px;padding:0;border:0;min-width:0}
+legend{float:left;width:100%}
+.mascot-picker{
+  clear:both;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.mascot-picker button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:10px 6px;
+  border:2px solid var(--line);
+}
+.mascot-picker svg{max-width:100px}
+.mascot-picker button[aria-pressed=true]{
+  border-color:var(--purple);
+  background:var(--soft);
+  box-shadow:0 3px 0 #6039a81c;
+}
+.primary{
+  background:var(--purple);
+  color:#fff;
+  border-color:var(--purple);
+  box-shadow:0 4px 0 #422477;
+}
+.primary:not(:disabled):hover{background:#4f2d91;color:#fff}
+.secondary{background:#f1ecfa;color:#51318c;border-color:#d8cbea}
+.wide{width:100%}
+.muted{font-size:14px;color:var(--muted);margin-top:9px}
+.error{color:#9a2449;min-height:24px;font-size:15px}
+.save-note{
+  max-width:1012px;
+  margin:0 auto;
+  padding:10px 20px;
+  background:#fff1cc;
+  color:#5d480f;
+  font-size:14px;
+}
+.save-note:empty{display:none}
+.welcome{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:12px 8px 26px;
+}
+.welcome p{max-width:570px;font-size:19px}
+.hero-mascot{width:190px;flex-shrink:0}
+.spread{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.progress-panel{padding:22px 26px}
+progress{
+  appearance:none;
+  display:block;
+  width:100%;
+  height:13px;
+  border:0;
+  border-radius:20px;
+  overflow:hidden;
+  margin:12px 0 0;
+  background:#eee9f4;
+  accent-color:var(--purple);
+}
+progress::-webkit-progress-bar{background:#eee9f4;border-radius:20px}
+progress::-webkit-progress-value{background:var(--purple);border-radius:20px}
+progress::-moz-progress-bar{background:var(--purple);border-radius:20px}
+.lesson-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.lesson{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+.lesson p{font-size:16px;color:var(--muted);flex:1}
+.lesson .status{margin:2px 0 18px}
+.lesson button{width:100%}
+.lesson-number{
+  position:absolute;
+  top:22px;
+  right:24px;
+  color:#756486;
+  font-size:14px;
+  font-weight:bold;
+}
+.lesson-icon{font-size:40px;line-height:1;margin:4px 0 20px}
+.game-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:0 auto 20px;
+  max-width:830px;
+}
+.game-toolbar span{color:var(--muted);font-size:15px}
+.game{max-width:830px;margin:auto}
+.small-mascot{display:block;width:60px;flex-shrink:0}
+.game .eyebrow{margin:0}
+.game progress{margin:0 0 20px}
+.lesson-tip{
+  background:#e9f7f2;
+  border-radius:16px;
+  color:#25584b;
+  padding:14px 18px;
+  font-size:16px;
+}
+.question-title{
+  font-size:clamp(25px,4vw,34px);
+  margin:24px 0;
+  letter-spacing:-.5px;
+}
+.ten-grid{
+  display:grid;
+  grid-template-columns:repeat(10,minmax(0,1fr));
+  gap:4px;
+  margin:28px 0 10px;
+}
+.part{
+  min-width:0;
+  padding:0;
+  border:2px solid #b6c6c4;
+  border-radius:8px;
+  min-height:92px;
+  background:#edf2ef;
+  color:#384845;
+}
+.part span{font-size:13px}
+.part.filled{
+  background:var(--mint);
+  border-color:#267b70;
+  color:#143d37;
+}
+.visual-caption{text-align:center;font-size:14px;color:var(--muted)}
+.hundred-grid{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:3px;
+  width:min(100%,320px);
+  margin:20px auto 12px;
+}
+.hundred-grid span{
+  aspect-ratio:1;
+  background:#e9eeec;
+  border-radius:3px;
+}
+.hundred-grid span.filled{background:#53b5a5}
+.counter{text-align:center;font-weight:bold;margin:14px 0}
+.build-controls{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  max-width:420px;
+  margin:20px auto;
+}
+.number-orb{
+  display:grid;
+  place-items:center;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:var(--soft);
+  color:var(--purple);
+  font-size:46px;
+  font-weight:900;
+  margin:20px auto 28px;
+}
+.choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.choice{font-size:25px;padding:16px}
+.choice[aria-pressed=true]{
+  background:var(--soft);
+  border:2px solid var(--purple);
+  color:#4c287f;
+}
+.comparison{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  margin:30px 0;
+  font-size:clamp(28px,6vw,44px);
+  font-weight:900;
+}
+.comparison .unknown{
+  display:grid;
+  place-items:center;
+  width:65px;
+  height:65px;
+  border-radius:18px;
+  background:var(--soft);
+  color:var(--purple);
+}
+.compare-choices{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.compare-choices .choice{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:12px 5px;
+}
+.compare-choices strong{font-size:32px}
+.compare-choices span{font-size:13px}
+.tickets{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:25px 0;
+}
+.ticket{
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  flex:1;
+  max-width:230px;
+  border:2px dashed #decfb8;
+  background:#fff9ee;
+  border-radius:20px;
+  padding:20px 12px;
+  text-align:center;
+}
+.object{font-size:40px}
+.price{font-weight:900;font-size:28px;color:var(--purple)}
+.operation{font-size:28px;font-weight:bold}
+.money-input{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  max-width:330px;
+}
+.money-input>span{font-size:28px}
+.hint{
+  margin-top:22px;
+  background:#fff2cd;
+  color:#614912;
+  border-radius:16px;
+  padding:16px;
+}
+.feedback{
+  margin:20px 0 0;
+  padding:0;
+  min-height:28px;
+  font-weight:bold;
+}
+.feedback.correct{
+  padding:16px;
+  background:#e2f6eb;
+  color:#1c6545;
+  border-radius:16px;
+}
+.feedback.retry{
+  padding:16px;
+  background:#fff0dc;
+  color:#7c4c12;
+  border-radius:16px;
+}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:24px;
+}
+.actions .primary{margin-left:auto}
+.finish{max-width:700px;margin:auto;text-align:center}
+.finish-mascot{width:150px;margin:auto}
+.earned{
+  display:inline-block;
+  background:#fff1ce;
+  border-radius:20px;
+  padding:12px 22px;
+  font-weight:bold;
+  font-size:21px;
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-top:26px;
+}
+.metric strong{
+  display:block;
+  font-size:34px;
+  color:var(--purple);
+  line-height:1.3;
+}
+.metric span{display:block;font-size:15px;margin-top:8px}
+.stats>.panel{margin-top:24px}
+.stats h2{margin-top:0}
+.topic-row{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  border-top:1px solid var(--line);
+  padding:20px 0;
+}
+.topic-row:last-child{padding-bottom:0}
+.topic-row>div{flex:1}
+.topic-row p{margin:3px 0 0}
+.badge{font-size:30px}
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  margin:-1px;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+}
+@media(max-width:850px){
+  .lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:570px){
+  body{font-size:16px}
+  .topbar{padding:12px 16px}
+  nav{width:100%}
+  nav button{flex:1;padding:8px;font-size:12px}
+  main{padding:20px 14px 35px}
+  .panel{padding:22px 18px;border-radius:22px}
+  .entry{margin:0}
+  .eyebrow{font-size:11px}
+  .mascot-picker{gap:8px}
+  .mascot-picker strong{font-size:15px}
+  .welcome{gap:10px;padding:10px 4px 22px}
+  .hero-mascot{width:94px}
+  .welcome p{font-size:16px}
+  .welcome .primary{font-size:14px;padding:11px 12px}
+  .lesson-grid{grid-template-columns:1fr}
+  .lesson{padding:24px}
+  .lesson p{margin-bottom:12px}
+  .lesson-icon{font-size:34px;margin-bottom:16px}
+  .metrics{grid-template-columns:1fr;gap:10px}
+  .metric{display:flex;align-items:center;gap:18px}
+  .metric strong{min-width:110px;font-size:29px}
+  .metric span{margin:0}
+  .part{min-height:74px;border-radius:5px}
+  .part span{font-size:11px}
+  .ten-grid{gap:3px}
+  .actions{gap:10px}
+  .actions button{width:100%}
+  .actions .primary{margin-left:0}
+  .price{font-size:24px}
+  .ticket{padding:16px 8px}
+  .tickets{gap:8px}
+  .game-toolbar button{padding:8px 12px}
+}
+@media(prefers-reduced-motion:no-preference){
+  button{transition:background .15s,border-color .15s,box-shadow .15s}
+}
+@media print{
+  body{background:#fff}
+  nav,footer,.no-print,.save-note{display:none!important}
+  .panel{box-shadow:none;break-inside:avoid}
+  .topbar{padding:0}
+  header{border:0}
+  main{max-width:none;padding:20px 0}
+  .metrics{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+
+<body>
+<header id="header"></header>
+<main id="app" tabindex="-1"></main>
+<footer>Aprende a tu ritmo. Cada intento cuenta.</footer>
+<noscript>Activa JavaScript en tu navegador para jugar.</noscript>
+
+<script>
+"use strict";
+
+/* CINCO MISIONES, CON CINCO RETOS CADA UNA.
+   Los importes se representan con centavos enteros. */
+const LESSONS = [
+  {
+    id:"decimos",
+    kind:"ten",
+    title:"Bosque de los décimos",
+    questions:[
+      {id:"d0",kind:"ten",answer:3},
+      {id:"d1",kind:"ten",answer:7},
+      {id:"d2",kind:"ten",answer:5},
+      {id:"d3",kind:"ten",answer:9},
+      {id:"d4",kind:"ten",answer:10}
+    ]
+  },
+  {
+    id:"centesimos",
+    kind:"hundred",
+    title:"Laboratorio Centi",
+    questions:[
+      {id:"c0",kind:"hundred",answer:25},
+      {id:"c1",kind:"hundred",answer:37},
+      {id:"c2",kind:"hundred",answer:60},
+      {id:"c3",kind:"hundred",answer:8},
+      {id:"c4",kind:"hundred",answer:100}
+    ]
+  },
+  {
+    id:"iguales",
+    kind:"equal",
+    title:"Puentes gemelos",
+    questions:[
+      {
+        id:"e0",kind:"equal",shown:"0.5",
+        choices:["0.05","0.50","5.00","0.15"],answer:50
+      },
+      {
+        id:"e1",kind:"equal",shown:"0.3",
+        choices:["3.00","0.03","0.30","0.13"],answer:30
+      },
+      {
+        id:"e2",kind:"equal",shown:"0.90",
+        choices:["0.09","0.9","9.00","0.19"],answer:90
+      },
+      {
+        id:"e3",kind:"equal",shown:"0.70",
+        choices:["0.07","0.7","7.00","0.17"],answer:70
+      },
+      {
+        id:"e4",kind:"equal",shown:"1.0",
+        choices:["0.10","0.01","1.00","10.00"],answer:100
+      }
+    ]
+  },
+  {
+    id:"comparar",
+    kind:"compare",
+    title:"Carrera decimal",
+    questions:[
+      {id:"r0",kind:"compare",a:80,b:35,answer:">"},
+      {id:"r1",kind:"compare",a:40,b:40,answer:"="},
+      {id:"r2",kind:"compare",a:9,b:90,answer:"<"},
+      {id:"r3",kind:"compare",a:75,b:57,answer:">"},
+      {id:"r4",kind:"compare",a:60,b:62,answer:"<"}
+    ]
+  },
+  {
+    id:"mercado",
+    kind:"money",
+    title:"Mercadito decimal",
+    questions:[
+      {
+        id:"m0",kind:"money",mode:"sum",
+        a:250,b:125,answer:375,
+        names:["Lápiz","Pegatina"],icons:["✏️","⭐"]
+      },
+      {
+        id:"m1",kind:"money",mode:"change",
+        a:1000,b:650,answer:350,
+        names:["Pagas con","Libreta"],icons:["💵","📒"]
+      },
+      {
+        id:"m2",kind:"money",mode:"sum",
+        a:1250,b:725,answer:1975,
+        names:["Fruta","Jugo"],icons:["🍎","🧃"]
+      },
+      {
+        id:"m3",kind:"money",mode:"change",
+        a:2000,b:1375,answer:625,
+        names:["Pagas con","Libro"],icons:["💵","📚"]
+      },
+      {
+        id:"m4",kind:"money",mode:"sum",
+        a:380,b:245,answer:625,
+        names:["Goma","Sacapuntas"],icons:["🧽","✏️"]
+      }
+    ]
+  }
+];
+
+/* LÓGICA MATEMÁTICA Y ESTADÍSTICAS */
+function parseCents(raw){
+  const s=String(raw??"").trim().replace(",",".");
+  if(!/^(?:\d{1,4}(?:\.\d{1,2})?|\.\d{1,2})$/.test(s)){
+    return null;
+  }
+  const [whole="",fraction=""]=s.split(".");
+  return Number(whole||0)*100+Number(fraction.padEnd(2,"0"));
+}
+
+function dec(n){
+  return Math.floor(n/100)+"."+String(n%100).padStart(2,"0");
+}
+
+function decode(q,raw){
+  if(q.kind==="equal"||q.kind==="money")return parseCents(raw);
+  if(q.kind==="compare")return ["<","=",">"].includes(raw)?raw:null;
+  return Number.isInteger(raw)&&raw>=0&&
+    raw<=(q.kind==="ten"?10:100)?raw:null;
+}
+
+function submitAnswer(profile,q,raw){
+  const value=decode(q,raw);
+  if(value===null)return {invalid:true};
+
+  const correct=value===q.answer;
+  const r=profile.results[q.id]||(profile.results[q.id]={
+    attempts:0,hints:0,solved:false,first:false,last:null
+  });
+
+  if(r.solved)return {correct,practice:true,counted:false};
+
+  const signature=String(value);
+  if(r.last===signature){
+    return {correct,duplicate:true,counted:false};
+  }
+
+  r.last=signature;
+  r.attempts++;
+
+  if(r.attempts===1)r.first=correct;
+  r.solved=correct;
+
+  return {correct,counted:true};
+}
+
+function useHint(profile,q){
+  const r=profile.results[q.id]||(profile.results[q.id]={
+    attempts:0,hints:0,solved:false,first:false,last:null
+  });
+  if(!r.solved)r.hints++;
+}
+
+function summary(profile,questions){
+  const records=questions.map(q=>profile.results[q.id]).filter(Boolean);
+  const attempted=records.filter(r=>r.attempts>0).length;
+  const solved=records.filter(r=>r.solved).length;
+  const first=records.filter(r=>r.first).length;
+
+  return {
+    attempted,
+    solved,
+    first,
+    accuracy:attempted?Math.round(100*first/attempted):null,
+    hints:records.reduce((n,r)=>n+r.hints,0)
+  };
+}
+
+function esc(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+/* ESTADO DE LA APLICACIÓN */
+const ALL=LESSONS.flatMap(l=>l.questions);
+const KEY="decimalia-school-v1";
+const $=id=>document.getElementById(id);
+
+let note="";
+let player=null;
+let session=null;
+let chosen=0;
+
+const mascots=["Punto","Deci","Centi"];
+const descriptions=[
+  "Una unidad tiene 10 décimos. Cada parte de esta barra vale 0.1.",
+  "Una unidad tiene 100 centésimos. Cada cuadrito vale 0.01 y una fila vale 0.10.",
+  "Un cero al final de la parte decimal no cambia la cantidad: 0.5 = 0.50.",
+  "Compara cantidades usando el mismo número de cifras decimales: 0.8 = 0.80.",
+  "Con dinero de juego, alinea los puntos decimales para sumar o restar."
+];
+
+/* MASCOTAS: SE DIBUJAN SIN DESCARGAR ARCHIVOS */
+function mascot(i=0){
+  const face=
+    '<circle cx="43" cy="44" r="3" fill="#243049"/>'+
+    '<circle cx="66" cy="44" r="3" fill="#243049"/>'+
+    '<path d="M47 56 Q55 63 63 56" fill="none" '+
+    'stroke="#243049" stroke-width="3" stroke-linecap="round"/>';
+
+  const shapes=[
+    '<path d="M31 36L14 21M29 43L9 38M31 51L13 60'+
+    'M79 36L96 21M81 43L101 38M79 51L97 60" '+
+    'stroke="#f77e86" stroke-width="9" stroke-linecap="round"/>'+
+    '<ellipse cx="55" cy="77" rx="23" ry="21" fill="#71d0c0"/>'+
+    '<ellipse cx="55" cy="43" rx="31" ry="27" fill="#8be1ce"/>'+
+    '<ellipse cx="38" cy="95" rx="12" ry="5" fill="#51baa8"/>'+
+    '<ellipse cx="72" cy="95" rx="12" ry="5" fill="#51baa8"/>',
+
+    '<path d="M35 56Q-1 35 17 19Q36 23 49 49'+
+    'M74 57Q102 25 103 44Q101 61 77 69" fill="#53bdaa"/>'+
+    '<path d="M45 76L28 98L58 86" fill="#f49a57"/>'+
+    '<ellipse cx="57" cy="66" rx="22" ry="24" fill="#ffb869"/>'+
+    '<circle cx="55" cy="38" r="26" fill="#ffcb7e"/>'+
+    '<path d="M77 38L106 27L79 46" fill="#243049"/>'+
+    '<path d="M48 14L53 4L61 14" fill="#f77e86"/>',
+
+    '<path d="M55 17V8" stroke="#7754be" stroke-width="5"/>'+
+    '<circle cx="55" cy="6" r="6" fill="#f77e86"/>'+
+    '<rect x="24" y="20" width="62" height="50" rx="19" fill="#9270cd"/>'+
+    '<rect x="31" y="28" width="48" height="36" rx="13" fill="#fff6d9"/>'+
+    '<rect x="34" y="72" width="42" height="22" rx="10" fill="#9270cd"/>'+
+    '<path d="M32 79L19 74M78 79L92 70" stroke="#65c8b9" '+
+    'stroke-width="10" stroke-linecap="round"/>'+
+    '<path d="M43 96H33M69 96H79" stroke="#65c8b9" '+
+    'stroke-width="9" stroke-linecap="round"/>'
+  ];
+
+  return '<svg viewBox="0 0 110 108" role="img" aria-label="'+
+    mascots[i]+'">'+shapes[i]+face+"</svg>";
+}
+
+/* GUARDADO LOCAL POR NOMBRE */
+function loadData(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(KEY)||"null");
+
+    if(!raw||raw.version!==1||!Array.isArray(raw.players)){
+      return {version:1,players:[]};
+    }
+
+    const players=raw.players
+      .filter(p=>
+        p&&typeof p.name==="string"&&p.name.trim()&&
+        p.results&&typeof p.results==="object"
+      )
+      .map(p=>{
+        const results={};
+
+        for(const q of ALL){
+          const r=p.results[q.id];
+
+          if(r&&Number.isInteger(r.attempts)&&
+             r.attempts>=0&&r.attempts<=10000){
+            results[q.id]={
+              attempts:r.attempts,
+              hints:Number.isInteger(r.hints)
+                ?Math.max(0,Math.min(10000,r.hints)):0,
+              solved:r.solved===true&&r.attempts>0,
+              first:r.first===true&&r.attempts>0,
+              last:typeof r.last==="string"?r.last:null
+            };
+          }
+        }
+
+        return {
+          name:p.name.trim().slice(0,24),
+          mascot:Number.isInteger(p.mascot)&&
+            p.mascot>=0&&p.mascot<3?p.mascot:0,
+          results
+        };
+      });
+
+    return {version:1,players};
+  }catch(e){
+    note="No pudimos leer un guardado anterior. Puedes empezar a jugar.";
+    return {version:1,players:[]};
+  }
+}
+
+const db=loadData();
+
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(db));
+    note="";
+  }catch(e){
+    note="Este navegador no permite guardar. "+
+      "Tu avance durará mientras mantengas esta pestaña abierta.";
+  }
+
+  if($("save-note"))$("save-note").textContent=note;
+}
+
+function focusMain(){
+  $("app").focus({preventScroll:true});
+  window.scrollTo(0,0);
+}
+
+function header(){
+  $("header").innerHTML=
+    '<div class="topbar">'+
+      '<span class="brand"><span class="brand-dot"></span>decimalia</span>'+
+      (player
+        ?'<nav aria-label="Menú principal">'+
+           '<button type="button" data-action="home">Mi aventura</button>'+
+           '<button type="button" data-action="stats">Mi avance</button>'+
+           '<button type="button" data-action="logout">Cambiar jugador</button>'+
+         "</nav>"
+        :'<span class="grade">4.º de primaria</span>')+
+    '</div><p id="save-note" class="save-note" role="status">'+
+    esc(note)+"</p>";
+}
+
+/* PANTALLA DE ENTRADA */
+function renderEntry(){
+  player=null;
+  session=null;
+  chosen=0;
+  header();
+
+  $("app").innerHTML=
+    '<section class="entry panel">'+
+      '<span class="eyebrow">EXPLORA · JUEGA · APRENDE</span>'+
+      "<h1>¡Tu aventura decimal<br>empieza aquí!</h1>"+
+      '<p class="intro">Pinta, descubre y juega con los números.</p>'+
+      '<form id="entry-form">'+
+        '<label class="field-label" for="player-name">¿Cómo te llamas?</label>'+
+        '<input id="player-name" name="nombre" maxlength="24" required '+
+          'autocomplete="off" placeholder="Escribe tu nombre" '+
+          'aria-describedby="name-help name-error">'+
+        '<p id="name-help" class="muted">'+
+          "Usa tu primer nombre o un apodo. Tu avance se guarda "+
+          "con ese nombre en este navegador."+
+        "</p>"+
+        "<fieldset><legend>Elige a tu compañero</legend>"+
+          '<div class="mascot-picker">'+
+            mascots.map((m,i)=>
+              '<button type="button" data-mascot="'+i+
+              '" aria-pressed="'+(i===0)+'">'+
+              mascot(i)+"<strong>"+m+"</strong></button>"
+            ).join("")+
+          "</div>"+
+        "</fieldset>"+
+        '<p id="name-error" class="error" role="alert"></p>'+
+        '<button class="primary wide" type="submit">'+
+          '¡Vamos a jugar! <span aria-hidden="true">→</span>'+
+        "</button>"+
+      "</form>"+
+    "</section>";
+
+  focusMain();
+}
+
+function startPlayer(){
+  const name=$("player-name").value.trim().replace(/\s+/g," ").slice(0,24);
+
+  if(!name||!/\p{L}/u.test(name)){
+    $("name-error").textContent="Escribe un nombre con letras para empezar.";
+    $("player-name").focus();
+    return;
+  }
+
+  const key=name.normalize("NFKC").toLocaleLowerCase("es-MX");
+
+  player=db.players.find(p=>
+    p.name.normalize("NFKC").toLocaleLowerCase("es-MX")===key
+  );
+
+  if(!player){
+    player={name,mascot:chosen,results:{}};
+    db.players.push(player);
+  }else{
+    player.mascot=chosen;
+  }
+
+  save();
+  renderHome();
+}
+
+function done(l){
+  return l.questions.filter(q=>player.results[q.id]?.solved).length;
+}
+
+/* MAPA DE MISIONES */
+function renderHome(){
+  if(!player)return renderEntry();
+
+  header();
+  session=null;
+
+  const s=summary(player,ALL);
+  const next=LESSONS.find(l=>done(l)<5)||LESSONS[0];
+
+  $("app").innerHTML=
+    '<section class="welcome">'+
+      "<div>"+
+        '<span class="eyebrow">TU MUNDO DECIMAL</span>'+
+        "<h1>¡Hola, "+esc(player.name)+"!</h1>"+
+        "<p>"+(s.solved===25
+          ?"¡Completaste las cinco misiones! Puedes volver a practicar."
+          :"Tu siguiente descubrimiento te está esperando.")+
+        "</p>"+
+        '<button class="primary" type="button" data-lesson="'+next.id+'">'+
+          (s.solved===25?"Volver a practicar":"Continuar mi aventura")+
+          " →"+
+        "</button>"+
+      "</div>"+
+      '<div class="hero-mascot">'+mascot(player.mascot)+"</div>"+
+    "</section>"+
+    '<section class="panel progress-panel">'+
+      '<div class="spread"><strong>Tu aventura</strong>'+
+        "<span>"+s.solved+" de 25 retos resueltos</span>"+
+      "</div>"+
+      '<progress aria-label="Retos resueltos" max="25" value="'+
+        s.solved+'"></progress>'+
+    "</section>"+
+    "<h2>Elige una misión</h2>"+
+    '<div class="lesson-grid">'+
+      LESSONS.map((l,i)=>{
+        const n=done(l);
+        const icons=["🌳","🔬","🌉","🏁","🛍️"];
+        const texts=[
+          "Pinta partes de una unidad.",
+          "Construye números con cuadritos.",
+          "Encuentra cantidades iguales.",
+          "Descubre cuál es mayor.",
+          "Compra y calcula el cambio."
+        ];
+
+        return '<article class="panel lesson">'+
+          '<span class="lesson-number">'+(i+1)+"</span>"+
+          '<span class="lesson-icon" aria-hidden="true">'+icons[i]+"</span>"+
+          "<h3>"+l.title+"</h3>"+
+          "<p>"+texts[i]+"</p>"+
+          '<span class="status">'+
+            (n===5?"✓ Misión completada":n+" de 5 retos resueltos")+
+          "</span>"+
+          '<button class="secondary" type="button" data-lesson="'+l.id+'">'+
+            (n===5?"Practicar otra vez":n?"Seguir jugando":"Explorar")+
+          "</button>"+
+        "</article>";
+      }).join("")+
+    "</div>";
+
+  focusMain();
+}
+
+/* INICIO DE UNA MISIÓN */
+function openLesson(id){
+  if(!player)return;
+
+  const lesson=LESSONS.find(l=>l.id===id);
+  if(!lesson)return;
+
+  const first=lesson.questions.findIndex(q=>!player.results[q.id]?.solved);
+
+  session={
+    lesson,
+    index:first<0?0:first,
+    replay:first<0
+  };
+
+  resetQuestion();
+  renderGame();
+}
+
+function resetQuestion(){
+  Object.assign(session,{
+    amount:0,
+    tiles:Array(10).fill(false),
+    choice:null,
+    status:"idle",
+    hint:false
+  });
+}
+
+function currentQ(){
+  return session.lesson.questions[session.index];
+}
+
+function prompt(q){
+  if(q.kind==="ten"){
+    return "Pinta "+dec(q.answer*10).replace(/0$/,"")+" de la barra.";
+  }
+  if(q.kind==="hundred"){
+    return "Construye "+dec(q.answer)+" con los cuadritos.";
+  }
+  if(q.kind==="equal"){
+    return "¿Qué número vale lo mismo que "+q.shown+"?";
+  }
+  if(q.kind==="compare"){
+    return "Elige el signo que completa la comparación.";
+  }
+  return q.mode==="sum"
+    ?"¿Cuánto cuestan los dos objetos juntos?"
+    :"¿Cuánto cambio te deben dar?";
+}
+
+/* OBJETOS VISUALES: DÉCIMOS Y CENTÉSIMOS */
+function paintVisual(){
+  const q=currentQ();
+  const value=session.amount;
+  let out="";
+
+  if(q.kind==="ten"){
+    out=
+      '<div class="ten-grid" aria-label="Una unidad dividida en diez partes">'+
+      session.tiles.map((on,i)=>
+        '<button type="button" class="part '+(on?"filled":"")+
+        '" data-tile="'+i+
+        '" aria-label="Parte '+(i+1)+' de 10" aria-pressed="'+on+'">'+
+        "<span>"+(i+1)+"</span></button>"
+      ).join("")+
+      '</div><p class="visual-caption">La barra completa vale 1 unidad.</p>';
+  }else if(q.kind==="hundred"){
+    out=
+      '<div class="hundred-grid" role="img" aria-label="'+value+
+      ' de 100 cuadritos pintados">'+
+      Array.from({length:100},(_,i)=>
+        '<span class="'+(i<value?"filled":"")+'"></span>'
+      ).join("")+
+      "</div>"+
+      '<p class="visual-caption">La cuadrícula completa vale 1 unidad.</p>';
+  }
+
+  $("visual").innerHTML=out;
+  $("paint-count").textContent=q.kind==="ten"
+    ?"Pintaste "+value+" de 10 partes."
+    :"Pintaste "+value+" de 100 cuadritos.";
+}
+
+/* PANTALLA DE JUEGO */
+function renderGame(){
+  const q=currentQ();
+  const l=session.lesson;
+  const i=LESSONS.indexOf(l);
+
+  header();
+
+  let visual="";
+  let answers="";
+
+  if(q.kind==="ten"||q.kind==="hundred"){
+    visual=
+      '<div id="visual"></div>'+
+      '<p id="paint-count" class="counter" aria-live="polite"></p>';
+
+    answers=q.kind==="ten"
+      ?'<p class="muted">Toca las partes para pintarlas o quitarles el color.</p>'
+      :'<div class="build-controls">'+
+         '<button type="button" data-delta="10">+ 10 cuadritos</button>'+
+         '<button type="button" data-delta="1">+ 1 cuadrito</button>'+
+         '<button type="button" data-delta="-1">− 1 cuadrito</button>'+
+         '<button type="button" data-delta="-10">− 10 cuadritos</button>'+
+       "</div>";
+
+  }else if(q.kind==="equal"){
+    visual='<div class="number-orb">'+q.shown+"</div>";
+
+    answers=
+      '<div class="choice-grid">'+
+      q.choices.map(v=>
+        '<button class="choice" type="button" data-choice="'+esc(v)+
+        '" aria-pressed="false">'+v+"</button>"
+      ).join("")+
+      "</div>";
+
+  }else if(q.kind==="compare"){
+    visual=
+      '<div class="comparison">'+
+        "<span>"+dec(q.a).replace(/0$/,"")+"</span>"+
+        '<span class="unknown" id="chosen-sign">?</span>'+
+        "<span>"+dec(q.b)+"</span>"+
+      "</div>";
+
+    answers=
+      '<div class="compare-choices">'+
+      [["<","Menor que"],["=","Igual a"],[">","Mayor que"]]
+        .map(([v,text])=>
+          '<button class="choice" type="button" data-choice="'+esc(v)+
+          '" aria-pressed="false"><strong>'+esc(v)+"</strong>"+
+          "<span>"+text+"</span></button>"
+        ).join("")+
+      "</div>";
+
+  }else{
+    visual=
+      '<div class="tickets">'+
+      [q.a,q.b].map((v,k)=>
+        '<div class="ticket">'+
+          '<span class="object" aria-hidden="true">'+q.icons[k]+"</span>"+
+          "<strong>"+q.names[k]+"</strong>"+
+          '<span class="price">$'+dec(v)+"</span>"+
+        "</div>"
+      ).join(
+        '<span class="operation" aria-hidden="true">'+
+        (q.mode==="sum"?"+":"−")+"</span>"
+      )+
+      '</div><p class="muted">Dinero y precios de juego.</p>';
+
+    answers=
+      '<label class="field-label" for="money-answer">'+
+        "Tu respuesta, en pesos"+
+      "</label>"+
+      '<div class="money-input"><span aria-hidden="true">$</span>'+
+        '<input id="money-answer" inputmode="decimal" autocomplete="off" '+
+        'placeholder="Por ejemplo: 3.50" maxlength="8" '+
+        'aria-describedby="money-help">'+
+      "</div>"+
+      '<p id="money-help" class="muted">'+
+        "Puedes usar punto o coma decimal."+
+      "</p>";
+  }
+
+  $("app").innerHTML=
+    '<div class="game-toolbar">'+
+      '<button type="button" data-action="home">← Misiones</button>'+
+      "<span>"+(session.replay?"Repaso · ":"")+
+        "Reto "+(session.index+1)+" de 5"+
+      "</span>"+
+    "</div>"+
+    '<section class="panel game">'+
+      '<div class="spread">'+
+        '<span class="eyebrow">'+l.title+"</span>"+
+        '<span class="small-mascot">'+mascot(player.mascot)+"</span>"+
+      "</div>"+
+      '<progress aria-label="Posición en esta misión" max="5" value="'+
+        session.index+'"></progress>'+
+      '<p class="lesson-tip">'+descriptions[i]+"</p>"+
+      '<h1 class="question-title">'+prompt(q)+"</h1>"+
+      '<form id="challenge-form">'+
+        visual+answers+
+        '<aside id="hint-box" class="hint" hidden></aside>'+
+        '<p id="feedback" class="feedback" role="status" tabindex="-1"></p>'+
+        '<div class="actions">'+
+          '<button type="button" class="secondary" data-action="hint" '+
+            'id="hint-button">Necesito una pista</button>'+
+          '<button class="primary" type="submit" '+
+            'id="check-button">Comprobar</button>'+
+          '<button class="primary" type="button" data-action="next" '+
+            'id="next-button" hidden>'+
+            (session.index===4?"Ver resultado":"Siguiente reto →")+
+          "</button>"+
+        "</div>"+
+      "</form>"+
+    "</section>";
+
+  if(q.kind==="ten"||q.kind==="hundred")paintVisual();
+  focusMain();
+}
+
+/* AYUDA Y EXPLICACIONES */
+function hintText(q){
+  if(q.kind==="ten"){
+    return "Cada parte vale un décimo (0.1). Fíjate en cuántos "+
+      "décimos pide el número y pinta esa cantidad de partes.";
+  }
+  if(q.kind==="hundred"){
+    return "Cada fila tiene 10 cuadritos y vale 0.10. Puedes añadir "+
+      "filas de diez y después cuadritos de uno en uno.";
+  }
+  if(q.kind==="equal"){
+    return "Agregar o quitar un cero al final de la parte decimal "+
+      "conserva el valor. Por ejemplo: 0.4 = 0.40.";
+  }
+  if(q.kind==="compare"){
+    return "Escribe ambos con centésimos: "+dec(q.a)+" y "+dec(q.b)+
+      ". Compara "+q.a+" centésimos con "+q.b+
+      " centésimos. La abertura del signo mira al número mayor.";
+  }
+  return q.mode==="sum"
+    ?"Para saber el total, suma los dos precios. Escribe unidades "+
+      "bajo unidades y centésimos bajo centésimos."
+    :"Para saber el cambio, resta el precio del dinero con el que pagas.";
+}
+
+function showHint(){
+  if(!session||session.hint||session.status==="success")return;
+
+  session.hint=true;
+  useHint(player,currentQ());
+  save();
+
+  $("hint-box").hidden=false;
+  $("hint-box").textContent=
+    mascots[player.mascot]+": "+hintText(currentQ());
+
+  $("hint-button").disabled=true;
+  $("hint-button").textContent="Pista abierta";
+}
+
+function explanation(q){
+  if(q.kind==="ten"){
+    return q.answer+" décimos son "+dec(q.answer*10)+
+      ". Diez décimos forman una unidad.";
+  }
+  if(q.kind==="hundred"){
+    return q.answer+" centésimos se escriben "+dec(q.answer)+
+      ". Cien centésimos forman una unidad.";
+  }
+  if(q.kind==="equal"){
+    return q.shown+" y "+dec(q.answer)+" representan la misma cantidad.";
+  }
+  if(q.kind==="compare"){
+    return dec(q.a)+" "+q.answer+" "+dec(q.b)+
+      ". Estamos comparando "+q.a+" y "+q.b+" centésimos.";
+  }
+  return "$"+dec(q.a)+(q.mode==="sum"?" + $":" − $")+
+    dec(q.b)+" = $"+dec(q.answer)+".";
+}
+
+/* COMPROBACIÓN Y AVANCE */
+function checkAnswer(){
+  if(!session||session.status==="success")return;
+
+  const q=currentQ();
+  const raw=q.kind==="ten"||q.kind==="hundred"
+    ?session.amount
+    :q.kind==="money"
+      ?$("money-answer").value
+      :session.choice;
+
+  const outcome=submitAnswer(player,q,raw);
+  const feedback=$("feedback");
+  feedback.className="feedback";
+
+  if(outcome.invalid){
+    feedback.textContent=q.kind==="money"
+      ?"Escribe una cantidad como 3.50."
+      :"Elige una respuesta para comprobarla.";
+    return;
+  }
+
+  if(outcome.duplicate){
+    feedback.textContent="Cambia tu respuesta antes de intentarlo otra vez.";
+    return;
+  }
+
+  save();
+
+  if(outcome.correct){
+    session.status="success";
+
+    feedback.classList.add("correct");
+    feedback.textContent="¡Lo lograste! "+explanation(q);
+
+    $("check-button").hidden=true;
+    $("next-button").hidden=false;
+    $("hint-button").disabled=true;
+
+    $("challenge-form")
+      .querySelectorAll(
+        "input, button[data-choice], button[data-tile], button[data-delta]"
+      )
+      .forEach(el=>el.disabled=true);
+
+    $("next-button").focus();
+  }else{
+    session.status="retry";
+    feedback.classList.add("retry");
+    feedback.textContent=
+      "Todavía no. Puedes cambiar tu respuesta o pedir una pista.";
+  }
+}
+
+function advance(){
+  if(!session||session.status!=="success")return;
+
+  session.index++;
+
+  if(session.index>=session.lesson.questions.length){
+    return renderComplete();
+  }
+
+  resetQuestion();
+  renderGame();
+}
+
+/* RESULTADO DE UNA MISIÓN */
+function renderComplete(){
+  const l=session.lesson;
+  const n=done(l);
+
+  header();
+
+  $("app").innerHTML=
+    '<section class="panel finish">'+
+      '<div class="finish-mascot">'+mascot(player.mascot)+"</div>"+
+      '<span class="eyebrow">'+l.title+"</span>"+
+      "<h1>"+(session.replay?"¡Repaso terminado!":"¡Misión completada!")+"</h1>"+
+      "<p>Buen trabajo, "+esc(player.name)+
+        ". Sigue descubriendo a tu ritmo.</p>"+
+      '<div class="earned">🏅 '+n+" de 5 retos resueltos</div>"+
+      '<p class="muted">'+
+        "Tus primeros intentos y tus pistas están en “Mi avance”."+
+      "</p>"+
+      '<div class="actions">'+
+        '<button class="primary" type="button" data-action="home">'+
+          "Volver a mis misiones"+
+        "</button>"+
+        '<button class="secondary" type="button" data-action="stats">'+
+          "Ver mi avance"+
+        "</button>"+
+      "</div>"+
+    "</section>";
+
+  focusMain();
+}
+
+/* ESTADÍSTICAS REALES */
+function renderStats(){
+  if(!player)return renderEntry();
+
+  header();
+  const s=summary(player,ALL);
+
+  $("app").innerHTML=
+    '<section class="stats">'+
+      '<span class="eyebrow">CADA PASO CUENTA</span>'+
+      "<h1>El avance de "+esc(player.name)+"</h1>"+
+      "<p>Estos resultados vienen de tus respuestas en este navegador.</p>"+
+      '<div class="metrics">'+
+        '<div class="panel metric"><strong>'+s.solved+" / 25</strong>"+
+          "<span>Retos resueltos</span></div>"+
+        '<div class="panel metric"><strong>'+
+          (s.accuracy===null?"—":s.accuracy+"%")+
+          "</strong><span>Aciertos al primer intento</span></div>"+
+        '<div class="panel metric"><strong>'+s.hints+
+          "</strong><span>Pistas utilizadas</span></div>"+
+      "</div>"+
+      '<p class="muted">Primer intento: '+s.first+
+        " aciertos entre "+s.attempted+
+        " retos intentados. Pedir ayuda también es aprender.</p>"+
+      '<section class="panel"><h2>Mis cinco misiones</h2>'+
+        LESSONS.map(l=>{
+          const t=summary(player,l.questions);
+
+          return '<div class="topic-row">'+
+            "<div><strong>"+l.title+"</strong>"+
+              '<p class="muted">'+t.solved+" de 5 resueltos · "+
+                t.first+" aciertos al primer intento</p>"+
+              '<progress aria-label="'+l.title+
+                ': retos resueltos" max="5" value="'+t.solved+'"></progress>'+
+            "</div>"+
+            '<span class="badge">'+(t.solved===5?"🏅":"○")+
+              '<span class="sr-only">'+
+                (t.solved===5?"Completada":"En progreso")+
+              "</span>"+
+            "</span>"+
+          "</div>";
+        }).join("")+
+      "</section>"+
+      '<p class="muted">'+
+        "Repetir una misión completada es práctica: conserva tus logros "+
+        "y no altera el resultado de tus primeros intentos."+
+      "</p>"+
+      '<div class="actions no-print">'+
+        '<button class="primary" type="button" data-action="home">'+
+          "Seguir explorando"+
+        "</button>"+
+        '<button class="secondary" type="button" data-action="print">'+
+          "Imprimir mi avance"+
+        "</button>"+
+      "</div>"+
+    "</section>";
+
+  focusMain();
+}
+
+/* CONTROLES */
+document.addEventListener("submit",ev=>{
+  if(ev.target.id==="entry-form"){
+    ev.preventDefault();
+    startPlayer();
+  }
+  if(ev.target.id==="challenge-form"){
+    ev.preventDefault();
+    checkAnswer();
+  }
+});
+
+document.addEventListener("click",ev=>{
+  const b=ev.target.closest("button");
+  if(!b||b.disabled)return;
+
+  if(b.dataset.mascot!==undefined){
+    chosen=Number(b.dataset.mascot);
+
+    document.querySelectorAll("[data-mascot]").forEach(el=>{
+      el.setAttribute(
+        "aria-pressed",
+        String(Number(el.dataset.mascot)===chosen)
+      );
+    });
+    return;
+  }
+
+  if(b.dataset.lesson){
+    openLesson(b.dataset.lesson);
+    return;
+  }
+
+  if(b.dataset.action){
+    ({
+      home:renderHome,
+      stats:renderStats,
+      logout:renderEntry,
+      hint:showHint,
+      next:advance,
+      print:()=>window.print()
+    })[b.dataset.action]?.();
+    return;
+  }
+
+  if(!session||session.status==="success")return;
+
+  if(b.dataset.tile!==undefined){
+    const i=Number(b.dataset.tile);
+    session.tiles[i]=!session.tiles[i];
+    session.amount=session.tiles.filter(Boolean).length;
+
+    paintVisual();
+
+    document.querySelector('[data-tile="'+i+'"]')
+      ?.focus({preventScroll:true});
+  }
+
+  if(b.dataset.delta!==undefined){
+    session.amount=Math.max(
+      0,
+      Math.min(100,session.amount+Number(b.dataset.delta))
+    );
+    paintVisual();
+  }
+
+  if(b.dataset.choice!==undefined){
+    session.choice=b.dataset.choice;
+
+    document.querySelectorAll("[data-choice]").forEach(el=>{
+      el.setAttribute(
+        "aria-pressed",
+        String(el.dataset.choice===session.choice)
+      );
+    });
+
+    if($("chosen-sign")){
+      $("chosen-sign").textContent=session.choice;
+    }
+  }
+});
+
+renderEntry();
+</script>
+</body>
+</html>
